@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>機車 &amp; ATV／UTV 知識庫 — 產業動態 Dashboard</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans TC', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            bg: '#0b0f17',
+            panel: '#111827',
+            card: '#151e2e',
+            border: '#1f2937',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #0b0f17;
+      color: #e2e8f0;
+      font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f17;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    .nav-item.active {
+      background-color: rgba(245, 158, 11, 0.14);
+      color: #fbbf24;
+      border-left: 3px solid #f59e0b;
+    }
+    .drawer-enter {
+      transform: translateX(0%);
+    }
+    .drawer-leave {
+      transform: translateX(100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-amber-500/30 selection:text-amber-200">
+
+  <!-- Mobile Sidebar Backdrop -->
+  <div id="sidebar-backdrop" class="fixed inset-0 z-30 hidden bg-black/60 backdrop-blur-sm lg:hidden"></div>
+
+  <!-- Fixed Left Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 flex w-64 -translate-x-full flex-col border-r border-slate-800/80 bg-[#0f1522] transition-transform duration-200 lg:translate-x-0">
+    <div class="flex items-center justify-between border-b border-slate-800/80 px-5 py-5">
+      <div>
+        <div class="flex items-center gap-2 text-base font-bold tracking-tight text-white">
+          <span class="text-xl">🏍️</span>
+          <span>機車 &amp; ATV 知識庫</span>
+        </div>
+        <p class="mt-1 text-xs font-medium text-slate-400">二輪・特種載具產業 Dashboard</p>
+      </div>
+      <button id="close-sidebar-btn" type="button" aria-label="關閉選單" class="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white lg:hidden">
+        ✕
+      </button>
+    </div>
+
+    <nav class="flex-1 space-y-1 px-3 py-4" aria-label="主要導覽">
+      <a href="#activity" data-section="activity" class="nav-item active flex items-center justify-between rounded-r-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800/60 hover:text-white">
+        <span class="flex items-center gap-2.5"><span>📰</span><span>最新動態</span></span>
+        <span id="nav-count-activity" class="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-400">3</span>
+      </a>
+      <a href="#concepts" data-section="concepts" class="nav-item flex items-center justify-between rounded-r-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800/60 hover:text-white">
+        <span class="flex items-center gap-2.5"><span>🗺️</span><span>概念地圖</span></span>
+        <span id="nav-count-concepts" class="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-400">6</span>
+      </a>
+      <a href="#countries" data-section="countries" class="nav-item flex items-center justify-between rounded-r-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800/60 hover:text-white">
+        <span class="flex items-center gap-2.5"><span>🌍</span><span>國家動態</span></span>
+        <span id="nav-count-countries" class="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-400">5</span>
+      </a>
+      <a href="#entities" data-section="entities" class="nav-item flex items-center justify-between rounded-r-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800/60 hover:text-white">
+        <span class="flex items-center gap-2.5"><span>🏭</span><span>車廠資料庫</span></span>
+        <span id="nav-count-entities" class="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-400">8</span>
+      </a>
+      <a href="#sources" data-section="sources" class="nav-item flex items-center justify-between rounded-r-lg px-3 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800/60 hover:text-white">
+        <span class="flex items-center gap-2.5"><span>📚</span><span>來源追蹤</span></span>
+        <span id="nav-count-sources" class="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-slate-400">12</span>
+      </a>
+    </nav>
+
+    <div class="border-t border-slate-800/80 px-5 py-4 text-xs text-slate-500">
+      <div class="flex items-center justify-between">
+        <span>最後更新</span>
+        <span class="font-mono text-slate-300">2026-11-24</span>
+      </div>
+      <div class="mt-1 flex items-center justify-between">
+        <span>生成時間</span>
+        <span class="font-mono text-slate-400">2026-11-24 11:38</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Shell -->
+  <div class="lg:pl-64">
+    <!-- Sticky Top Toolbar -->
+    <header class="sticky top-0 z-20 border-b border-slate-800/80 bg-[#0b0f17]/90 backdrop-blur-md">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3">
+          <button id="open-sidebar-btn" type="button" aria-label="開啟選單" class="rounded-lg border border-slate-700 bg-slate-800/80 p-2 text-slate-300 hover:bg-slate-700 hover:text-white lg:hidden">
+            ☰
+          </button>
+          <div id="top-stats-bar" class="text-xs font-medium text-slate-400 sm:text-sm">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Global Search -->
+        <div class="relative w-full sm:w-80 md:w-96">
+          <div class="relative flex items-center">
+            <span class="pointer-events-none absolute left-3 text-sm text-slate-400">🔍</span>
+            <input
+              id="global-search"
+              type="search"
+              placeholder="搜尋概念、車廠、國家、來源..."
+              autocomplete="off"
+              class="w-full rounded-lg border border-slate-700/80 bg-[#141c2b] py-2 pl-9 pr-8 text-sm text-slate-100 placeholder-slate-500 transition focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+            />
+            <button id="clear-search-btn" type="button" aria-label="清除搜尋" class="absolute right-2.5 hidden text-xs text-slate-400 hover:text-white">✕</button>
+          </div>
+          <!-- Dropdown Results -->
+          <div id="search-dropdown" class="absolute left-0 right-0 top-full z-50 mt-2 hidden max-h-96 overflow-y-auto rounded-xl border border-slate-700/90 bg-[#131b2b] p-2 shadow-2xl">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Sections -->
+    <main class="mx-auto max-w-7xl space-y-16 px-4 py-8 sm:px-6 lg:px-8">
+
+      <!-- 1. 最新動態 -->
+      <section id="activity" class="scroll-mt-20">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/80 pb-4">
+          <div>
+            <h2 class="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl">
+              <span>📰</span>
+              <span>最新動態</span>
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">依知識庫彙整批次追蹤二輪機車與 ATV／UTV 關鍵產業變動</p>
+          </div>
+        </div>
+        <div id="activity-list" class="space-y-6 border-l-2 border-slate-800 pl-5"></div>
+      </section>
+
+      <!-- 2. 概念地圖 -->
+      <section id="concepts" class="scroll-mt-20">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/80 pb-4">
+          <div>
+            <h2 class="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl">
+              <span>🗺️</span>
+              <span>概念地圖</span>
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">跨品牌與跨市場的核心技術路線、法規架構與商模拆解</p>
+          </div>
+        </div>
+        <div id="concepts-grid" class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+      </section>
+
+      <!-- 3. 國家動態 -->
+      <section id="countries" class="scroll-mt-20">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/80 pb-4">
+          <div>
+            <h2 class="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl">
+              <span>🌍</span>
+              <span>國家動態</span>
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">各區域二輪電動化滲透率、ATV／UTV 領牌規範與關稅政策</p>
+          </div>
+        </div>
+        <div id="countries-grid" class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"></div>
+      </section>
+
+      <!-- 4. 車廠資料庫 -->
+      <section id="entities" class="scroll-mt-20">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-slate-800/80 pb-4">
+          <div>
+            <h2 class="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl">
+              <span>🏭</span>
+              <span>車廠資料庫</span>
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">預設依關聯來源數由高到低排序，點擊卡片開啟完整技術與市場檔案</p>
+          </div>
+          <div id="entity-filters" class="flex flex-wrap gap-2">
+            <!-- Filter buttons injected by JS -->
+          </div>
+        </div>
+        <div id="entities-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      </section>
+
+      <!-- 5. 來源追蹤 -->
+      <section id="sources" class="scroll-mt-20 pb-12">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-3 border-b border-slate-800/80 pb-4">
+          <div>
+            <h2 class="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl">
+              <span>📚</span>
+              <span>來源追蹤</span>
+            </h2>
+            <p class="mt-1 text-sm text-slate-400">可依主題標籤篩選原始官方文件、產品型錄與技術規範</p>
+          </div>
+        </div>
+        <div id="source-filters" class="mb-5 flex flex-wrap gap-2"></div>
+        <div class="overflow-x-auto rounded-xl border border-slate-800 bg-[#111827]">
+          <table class="w-full min-w-[680px] text-left text-sm">
+            <thead class="border-b border-slate-800 bg-[#151e2e] text-xs uppercase tracking-wider text-slate-400">
+              <tr>
+                <th class="px-4 py-3 font-semibold">日期</th>
+                <th class="px-4 py-3 font-semibold">分類</th>
+                <th class="px-4 py-3 font-semibold">摘要與識別碼</th>
+                <th class="px-4 py-3 text-right font-semibold">原文</th>
+              </tr>
+            </thead>
+            <tbody id="sources-tbody" class="divide-y divide-slate-800/80"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Right Slide-Over Drawer -->
+  <div id="drawer-backdrop" class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-sm transition-opacity"></div>
+  <aside id="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" class="fixed inset-y-0 right-0 z-50 flex w-full max-w-2xl translate-x-full flex-col border-l border-slate-700/80 bg-[#101725] shadow-2xl transition-transform duration-200">
+    <div class="flex items-start justify-between gap-4 border-b border-slate-800 px-6 py-5">
+      <div>
+        <div id="drawer-badge" class="mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold"></div>
+        <h3 id="drawer-title" class="text-xl font-bold text-white"></h3>
+        <p id="drawer-meta" class="mt-1 text-xs text-slate-400"></p>
+      </div>
+      <button id="close-drawer-btn" type="button" aria-label="關閉抽屜" class="rounded-lg border border-slate-700/80 bg-slate-800/70 px-2.5 py-1.5 text-sm text-slate-300 hover:bg-slate-700 hover:text-white">
+        ✕
+      </button>
+    </div>
+    <div id="drawer-body" class="flex-1 space-y-6 overflow-y-auto px-6 py-6 text-sm leading-relaxed text-slate-300">
+      <!-- Dynamic structured content -->
+    </div>
+  </aside>
+
+  <script>
+    // =========================================================================
+    // 知識庫範例資料（模仿 ev-wiki 結構，聚焦機車與 ATV／UTV 領域）
+    // =========================================================================
+    const WIKI_DATA = {
+  "activities": [
+    {
+      "id": "ingest-2026-11-24",
+      "date": "2026-11-24",
+      "type": "Ingest",
+      "title": "2026 Q4 特種載具純電化與二輪歐規認證批次彙整",
+      "why": "農林與商用場域對低噪音 UTV 需求升溫，CFMOTO 與 Polaris 陸續推出純電工具型 UTV，同時台灣二輪廠持續以高階運動速克達與換電平台雙線佈局。",
+      "finding": "UTV 市場正從純休閒轉向「農業／園區作業電動化」，60–110 km 等速續航搭配標準 15A 充電即可覆蓋單日農場作業；二輪領域則以 150–165cc 水冷運動速克達與輕量化綠牌電動車為兩大銷量支柱。",
+      "next": "追蹤歐盟 T3b（農林曳引機）與 L7e（重型四輪車）在 2027 年的排放與安全法規修訂，以及 Can-Am 電動二輪與三輪車系的量產交付節奏。",
+      "stats": "更新 3 概念 · 2 國家 · 4 車廠 · 6 來源",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "atv-utv-electrification",
+          "label": "ATV／UTV 純電與油電化"
+        },
+        {
+          "type": "entity",
+          "id": "polaris",
+          "label": "Polaris"
+        },
+        {
+          "type": "entity",
+          "id": "cfmoto",
+          "label": "CFMOTO 春風動力"
+        }
+      ]
+    },
+    {
+      "id": "ingest-2026-11-18",
+      "date": "2026-11-18",
+      "type": "Ingest",
+      "title": "台灣二輪換電雙雄與傳統車廠車系戰略更新",
+      "why": "台灣機車市場進入「油電共存」穩定期，入門通勤與高階旗艦的價格帶與資費結構出現明顯分化。",
+      "finding": "Gogoro 透過入門車款 EZZY 壓低入手門檻並搭配低月租方案搶攻代步族；KYMCO 則一邊以 Ionex i-One Air/Fly 鞏固換電市場，一邊以 RTS R 165 等高階油車與 ATV 產品線維持毛利。",
+      "next": "觀察東南亞（越南、印尼）換電基礎設施合作案是否帶動台廠三電零組件出海。",
+      "stats": "更新 2 概念 · 2 國家 · 3 車廠 · 4 來源",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "two-wheel-swap-vs-charge",
+          "label": "二輪換電 vs. 快充生態"
+        },
+        {
+          "type": "entity",
+          "id": "kymco",
+          "label": "KYMCO 光陽"
+        },
+        {
+          "type": "entity",
+          "id": "gogoro",
+          "label": "Gogoro"
+        },
+        {
+          "type": "country",
+          "id": "tw",
+          "label": "台灣"
+        }
+      ]
+    },
+    {
+      "id": "ingest-2026-11-06",
+      "date": "2026-11-06",
+      "type": "Ingest",
+      "title": "北美 Sport UTV 與跨界 Side-by-Side 產品線盤點",
+      "why": "高毛利運動型 UTV（SSV）是北美 Powersports 大廠獲利核心，懸吊行程與渦輪增壓動力持續刷新級距天花板。",
+      "finding": "Polaris RZR／RANGER 與 Can-Am Outlander／Defender 在北美市場形成雙寡頭格局，而 CFMOTO UFORCE 系列正以高性價比切入英國與紐澳農用 UTV 市佔。",
+      "next": "補充 ATV／UTV 傳動系統（CVT 皮帶 vs. 直驅電機）耐用度與售後維修成本比較。",
+      "stats": "更新 1 概念 · 2 國家 · 3 車廠 · 2 來源",
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "can-am",
+          "label": "Can-Am (BRP)"
+        },
+        {
+          "type": "country",
+          "id": "na",
+          "label": "美國與加拿大"
+        }
+      ]
+    }
+  ],
+  "concepts": [
+    {
+      "id": "two-wheel-swap-vs-charge",
+      "title": "二輪換電 vs. 快充生態",
+      "sourcesCount": 18,
+      "updated": "2026-11-24",
+      "progress": 85,
+      "summary": "比較台灣高密度電池交換站（Gogoro Network、Ionex）與家用充電／DC 快充模式在都會通勤與外送商用場景的 TCO 總持有成本差異。",
+      "tags": [
+        "能源補給",
+        "都會通勤",
+        "商用外送"
+      ],
+      "sections": [
+        {
+          "heading": "核心技術與商模對比",
+          "text": "換電模式透過標準化電池模組消除里程焦慮與電池衰減風險，適合高密度停車環境；充電模式則免除月租綁約，在東南亞透天住宅與歐洲個人車庫更具優勢。"
+        },
+        {
+          "heading": "代表廠商佈局",
+          "text": "Gogoro 與 KYMCO Ionex 主導台灣換電網路，並逐步將電池交換平台輸出至東南亞與印度商用車隊。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "gogoro",
+          "label": "Gogoro"
+        },
+        {
+          "type": "entity",
+          "id": "kymco",
+          "label": "KYMCO 光陽"
+        },
+        {
+          "type": "country",
+          "id": "tw",
+          "label": "台灣"
+        }
+      ]
+    },
+    {
+      "id": "atv-utv-electrification",
+      "title": "ATV／UTV 純電與油電化",
+      "sourcesCount": 14,
+      "updated": "2026-11-24",
+      "progress": 72,
+      "summary": "解析工具型 UTV（如 CFMOTO UFORCE U6 EV、Polaris Ranger EV）如何解決農林牧場的噪音、怠速油耗與室內通風痛點。",
+      "tags": [
+        "電動越野",
+        "工具型 UTV",
+        "低噪音作業"
+      ],
+      "sections": [
+        {
+          "heading": "為何工具型 UTV 先行電動化？",
+          "text": "相較於追求極限長途穿越的 Sport SxS，農場、高爾夫球場、度假村與倉儲園區的 UTV 每日行駛距離固定且常需進出室內或畜牧區，純電驅動的低噪音與零排放優勢極為明顯。"
+        },
+        {
+          "heading": "電池與充電規格",
+          "text": "主流純電工具 UTV 普遍支援一般 15A 家用插座充電（約 6.5 小時充滿），等速續航落在 80–110 公里區間。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "cfmoto",
+          "label": "CFMOTO 春風動力"
+        },
+        {
+          "type": "entity",
+          "id": "polaris",
+          "label": "Polaris"
+        }
+      ]
+    },
+    {
+      "id": "eu-t3b-l7e-homologation",
+      "title": "歐盟 T3b／L7e 特種載具法規",
+      "sourcesCount": 11,
+      "updated": "2026-11-18",
+      "progress": 68,
+      "summary": "ATV 與 UTV 進入歐洲合法道路與農林場域的兩大核心認證類別：T3b 農林曳引機與 L7e 四輪重型機車規範差異。",
+      "tags": [
+        "歐盟認證",
+        "T3b",
+        "L7e",
+        "合法上路"
+      ],
+      "sections": [
+        {
+          "heading": "T3b vs. L7e 關鍵差異",
+          "text": "T3b 屬於農林用輪式曳引機類別，速限通常規範於 60 km/h（部分地區可免除特定乘用車稅賦）；L7e 則歸類於四輪機車（Quadricycle），對車重、最大淨功率與排放有更嚴格的公路安全要求。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "country",
+          "id": "eu",
+          "label": "歐洲聯盟"
+        },
+        {
+          "type": "entity",
+          "id": "kymco",
+          "label": "KYMCO 光陽"
+        }
+      ]
+    },
+    {
+      "id": "two-wheel-abs-adas",
+      "title": "二輪 ABS／TCS 與主動安全",
+      "sourcesCount": 15,
+      "updated": "2026-11-12",
+      "progress": 90,
+      "summary": "從 125cc 普及 ABS、TCS 循跡防滑到高階大型重機導入毫米波雷達 ACC 與盲點偵測（BSD）的技術下放趨勢。",
+      "tags": [
+        "主動安全",
+        "電控系統",
+        "法規強制"
+      ],
+      "sections": [
+        {
+          "heading": "電控下放白牌級距",
+          "text": "過去僅見於公升級重機的 TCS 循跡防滑與連網儀表，已成台灣 125–165cc 旗艦運動速克達標配。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "sym",
+          "label": "SYM 三陽工業"
+        },
+        {
+          "type": "entity",
+          "id": "yamaha",
+          "label": "Yamaha"
+        }
+      ]
+    },
+    {
+      "id": "utility-special-purpose-vehicles",
+      "title": "農林與救災特種載具改裝",
+      "sourcesCount": 9,
+      "updated": "2026-11-06",
+      "progress": 60,
+      "summary": "盤點 ATV／UTV 搭載傾卸貨斗（Tipping Cargo Bed）、絞盤、雪鏟與消防／山難搜救模組的專用底盤與 PTO 擴充規格。",
+      "tags": [
+        "特種應用",
+        "搜救裝備",
+        "貨斗承載"
+      ],
+      "sections": [
+        {
+          "heading": "高通過性與模組化接口",
+          "text": "側坐式 UTV（Side-by-Side）憑藉防滾籠（ROPS）、高離地間隙與可傾卸貨斗，成為山區林務巡檢與災害搶修的重要載具。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "polaris",
+          "label": "Polaris"
+        },
+        {
+          "type": "entity",
+          "id": "can-am",
+          "label": "Can-Am (BRP)"
+        }
+      ]
+    },
+    {
+      "id": "offroad-thermal-waterproof",
+      "title": "三電系統涉水防護與熱管理",
+      "sourcesCount": 8,
+      "updated": "2026-11-02",
+      "progress": 55,
+      "summary": "針對越野泥濘、涉水與高負載爬坡工況，電動 ATV／UTV 電池包須達成 IP67／IP68 密封與高倍率散熱設計。",
+      "tags": [
+        "IP67 防護",
+        "電池熱管理",
+        "越野工況"
+      ],
+      "sections": [
+        {
+          "heading": "極端環境考驗",
+          "text": "與一般道路電動車不同，ATV／UTV 經常面臨高扭力低速攀爬與泥水噴濺，電機繞組與電池冷卻迴路必須兼顧防塵防水與持續大電流放電散熱。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "atv-utv-electrification",
+          "label": "ATV／UTV 純電與油電化"
+        }
+      ]
+    }
+  ],
+  "countries": [
+    {
+      "id": "tw",
+      "name": "台灣",
+      "sourcesCount": 24,
+      "updated": "2026-11-24",
+      "summary": "全球二輪機車密度最高市場之一，油電雙線競爭白熱化；ATV／UTV 主要採外銷導向（光陽、鼎力等供應歐美代工與自有品牌），國內則限於場域／農用或特殊專案引進。",
+      "tags": [
+        "油電共存",
+        "換電密度全球第一",
+        "ATV 外銷基地"
+      ],
+      "sections": [
+        {
+          "heading": "市場概況 (2026)",
+          "text": "燃油白牌旗艦（125–165cc）與綠牌／白牌電動車各自穩固客群；政府持續針對汰舊換新與電動機車提供補助。"
+        },
+        {
+          "heading": "特種載具現況",
+          "text": "台灣具備深厚的 ATV／UTV 整車與零組件製造供應鏈，多數產品符合歐盟 T3b／EPA 認證並出口歐美市場。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "kymco",
+          "label": "KYMCO 光陽"
+        },
+        {
+          "type": "entity",
+          "id": "sym",
+          "label": "SYM 三陽工業"
+        },
+        {
+          "type": "entity",
+          "id": "gogoro",
+          "label": "Gogoro"
+        }
+      ]
+    },
+    {
+      "id": "na",
+      "name": "美國與加拿大",
+      "sourcesCount": 21,
+      "updated": "2026-11-18",
+      "summary": "全球最大 ATV 與 Side-by-Side（UTV）消費市場，涵蓋廣大農場作業、林業、狩獵與沙漠／林道休閒穿越需求。",
+      "tags": [
+        "全球最大 ORV 市場",
+        "RZR / RANGER 雙強",
+        "休閒與農用並重"
+      ],
+      "sections": [
+        {
+          "heading": "市場特徵",
+          "text": "消費者對高馬力 Sport SxS 與密閉冷暖氣座艙型 Utility UTV 接受度極高，Polaris 與 Can-Am (BRP) 合計囊括過半市佔。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "polaris",
+          "label": "Polaris"
+        },
+        {
+          "type": "entity",
+          "id": "can-am",
+          "label": "Can-Am (BRP)"
+        }
+      ]
+    },
+    {
+      "id": "eu",
+      "name": "歐洲聯盟",
+      "sourcesCount": 17,
+      "updated": "2026-11-15",
+      "summary": "二輪市場由大型速克達、檔車與 L1e／L3e 電動輕型機車構成；ATV／UTV 則高度依賴 T3b 與 L7e 認證法規才能合法行駛於鄉村道路。",
+      "tags": [
+        "Euro 5+ 排放",
+        "T3b 農林認證",
+        "英國與北歐需求高"
+      ],
+      "sections": [
+        {
+          "heading": "法規與進口趨勢",
+          "text": "英國與歐陸農場廣泛採用中大排氣量工具型 UTV（如 CFMOTO UFORCE 與 Polaris Ranger），純電 UTV 在環保法規嚴格的市政與園區標案中滲透率快速提升。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "eu-t3b-l7e-homologation",
+          "label": "歐盟 T3b／L7e 特種載具法規"
+        },
+        {
+          "type": "entity",
+          "id": "cfmoto",
+          "label": "CFMOTO 春風動力"
+        }
+      ]
+    },
+    {
+      "id": "sea",
+      "name": "東南亞（印尼／越南／泰國）",
+      "sourcesCount": 19,
+      "updated": "2026-11-10",
+      "summary": "年銷量千萬輛級的二輪核心戰場，正從日系彎梁／速克達主導，加速向在地組裝電動二輪與換電／充電雙軌轉型。",
+      "tags": [
+        "千萬輛級市場",
+        "電動化補貼",
+        "台日陸品牌競逐"
+      ],
+      "sections": [
+        {
+          "heading": "市場概況",
+          "text": "印尼與越南政府祭出電動二輪購車補貼與禁燃時間表討論，吸引台廠（Gogoro、KYMCO）與日系品牌結盟推進在地化生產與電池網路。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "honda",
+          "label": "Honda"
+        },
+        {
+          "type": "entity",
+          "id": "yamaha",
+          "label": "Yamaha"
+        }
+      ]
+    },
+    {
+      "id": "jp",
+      "name": "日本",
+      "sourcesCount": 12,
+      "updated": "2026-11-05",
+      "summary": "Honda、Yamaha、Suzuki、Kawasaki 四大廠技術研發核心基地，積極推動共通規格可換式電池聯盟與氫能／混合動力二輪測試。",
+      "tags": [
+        "四大廠研發中心",
+        "換電標準聯盟",
+        "混合動力測試"
+      ],
+      "sections": [
+        {
+          "heading": "技術合作",
+          "text": "日本四大車廠共同制定可攜式換電標準（Honda Mobile Power Pack e:），並同步布局全球 ATV／UTV 農林與休閒產線。"
+        }
+      ],
+      "relatedRefs": [
+        {
+          "type": "entity",
+          "id": "honda",
+          "label": "Honda"
+        },
+        {
+          "type": "entity",
+          "id": "yamaha",
+          "label": "Yamaha"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "id": "polaris",
+      "name": "Polaris（北極星）",
+      "category": "atv",
+      "categoryLabel": "ATV／UTV",
+      "sourcesCount": 42,
+      "updated": "2026-11-24",
+      "summary": "北美 Powersports 龍頭，旗下 RANGER（工具型 UTV）、RZR（運動型 SxS）與 Sportsman（ATV）為全球越野載具標竿。",
+      "info": {
+        "type": "美國上市公司（NYSE: PII）",
+        "hq": "美國明尼蘇達州 Medina",
+        "products": "RANGER UTV、RZR SxS、Sportsman ATV、GENERAL 跨界車、XPEDITION",
+        "focus": "高階運動越野、農林工具載具、純電 RANGER Kinetic"
+      },
+      "techRoute": "深耕高行程越野懸吊、全時四驅系統（On-Demand AWD）與 Ride Command 車聯網越野導航；近年導入純電驅動於工具型 RANGER 平台。",
+      "records": [
+        {
+          "date": "2026-Q4",
+          "event": "發表 2027 年式 RANGER 與 RZR 車系，強化座艙密封與保養週期延長"
+        },
+        {
+          "date": "2025-Q3",
+          "event": "擴大北美與歐洲農用純電 UTV 經銷與售後保固方案"
+        }
+      ],
+      "market": "穩居北美 ATV 與 Side-by-Side 市佔領先地位，並透過官網明確區隔 ATV（跨騎單人）與 SxS／UTV（並排雙人以上）應用場景。",
+      "officialUrl": "https://www.polaris.com/en-us/off-road/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "atv-utv-electrification",
+          "label": "ATV／UTV 純電與油電化"
+        },
+        {
+          "type": "country",
+          "id": "na",
+          "label": "美國與加拿大"
+        }
+      ]
+    },
+    {
+      "id": "kymco",
+      "name": "KYMCO（光陽工業）",
+      "category": "both",
+      "categoryLabel": "二輪 + ATV",
+      "sourcesCount": 38,
+      "updated": "2026-11-24",
+      "summary": "台灣二輪與 ATV 大廠，國內雙線推動燃油旗艦（RTS R 165、X-Town ST 250）與 Ionex 換電體系，外銷則長年深耕歐洲與北美 ATV 市場。",
+      "info": {
+        "type": "台灣民營車廠（跨國集團）",
+        "hq": "台灣高雄市三民區",
+        "products": "燃油速克達（RTS R 165、大樂）、Ionex 電動機車（i-One Air/Fly）、MXU/UXV 系列 ATV",
+        "focus": "油電雙線並行、歐洲 T3b ATV 外銷"
+      },
+      "techRoute": "二輪領域涵蓋水冷高性能引擎與 Ionex 換電系統（強調輕量化車身如 i-One Air 僅 81.5kg）；ATV 則具備完整 150cc–700cc 級距與歐洲認證經驗。",
+      "records": [
+        {
+          "date": "2026-11",
+          "event": "台灣主力推廣 RTS R 165、K1E、大樂及 Ionex i-One Fly 長續航方案"
+        },
+        {
+          "date": "2026-Q2",
+          "event": "持續維持官網 ATV 車系產品目錄與歐洲通路供應"
+        }
+      ],
+      "market": "台灣前三大機車品牌，同時是少數同時掌握二輪與 ATV 整車研發外銷能力的台灣車廠。",
+      "officialUrl": "https://www.kymco.com.tw/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "two-wheel-swap-vs-charge",
+          "label": "二輪換電 vs. 快充生態"
+        },
+        {
+          "type": "country",
+          "id": "tw",
+          "label": "台灣"
+        },
+        {
+          "type": "country",
+          "id": "eu",
+          "label": "歐洲聯盟"
+        }
+      ]
+    },
+    {
+      "id": "can-am",
+      "name": "Can-Am (BRP)",
+      "category": "both",
+      "categoryLabel": "ATV／UTV + EV 二輪",
+      "sourcesCount": 35,
+      "updated": "2026-11-20",
+      "summary": "加拿大 BRP 龐巴迪動力旗下核心品牌，以 Outlander ATV、Defender UTV 與 Spyder 三輪車聞名，並跨足純電二輪機車領域。",
+      "info": {
+        "type": "加拿大上市公司旗下品牌（BRP Inc.）",
+        "hq": "加拿大魁北克 Valcourt",
+        "products": "Outlander ATV、Defender / Maverick SxS、Spyder 三輪重機、純電二輪車系",
+        "focus": "Rotax 高性能動力、越野四驅與三輪／純電跨界"
+      },
+      "techRoute": "結合 Rotax 動力技術與電子動態懸吊，並在旗下產品線橫向拓展至三輪公路車（3-Wheel）與純電機車（EV motorcycle）。",
+      "records": [
+        {
+          "date": "2026-Q4",
+          "event": "推出 2027 年式 Outlander XT-P 與 Defender XT CAB 密閉座艙特仕車型"
+        },
+        {
+          "date": "2026-Q1",
+          "event": "強化全球 Off-Road 經銷商與 BRP GO! 智慧聯網生態系"
+        }
+      ],
+      "market": "與 Polaris 同為全球高階 ATV／UTV 市場雙雄，在北美、澳洲與紐西蘭擁有極高品牌忠誠度。",
+      "officialUrl": "https://can-am.brp.com/off-road/us/en/",
+      "relatedRefs": [
+        {
+          "type": "country",
+          "id": "na",
+          "label": "美國與加拿大"
+        },
+        {
+          "type": "concept",
+          "id": "utility-special-purpose-vehicles",
+          "label": "農林與救災特種載具改裝"
+        }
+      ]
+    },
+    {
+      "id": "gogoro",
+      "name": "Gogoro（睿能創意）",
+      "category": "motorcycle",
+      "categoryLabel": "二輪機車",
+      "sourcesCount": 33,
+      "updated": "2026-11-22",
+      "summary": "台灣智慧電動機車與電池交換網路龍頭，以 Smartscooter 智慧車系與 GoStation 換電網絡建立城市二輪能源標準。",
+      "info": {
+        "type": "美國那斯達克上市（NASDAQ: GGR）",
+        "hq": "台灣桃園市龜山區",
+        "products": "Gogoro Pulse、Gogoro Premium、Gogoro EZZY、GoStation 換電站",
+        "focus": "智慧電池交換網路、PBGN 換電聯盟、城市智慧移動"
+      },
+      "techRoute": "以液冷永磁同步馬達、數位儀表 OTA 更新與模組化智慧電池為核心，透過低月租費方案（如 EZZY 專案）擴大入門市場覆蓋率。",
+      "records": [
+        {
+          "date": "2026-11",
+          "event": "主打 Gogoro EZZY 入門車款低資費方案與 Gogoro Pulse 性能旗艦"
+        },
+        {
+          "date": "2026-Q3",
+          "event": "持續擴充 PBGN 聯盟車款與海外都會試點"
+        }
+      ],
+      "market": "台灣電動機車市佔第一，並建置全台密度最高的二輪能源交換網路。",
+      "officialUrl": "https://www.gogoro.com/tw/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "two-wheel-swap-vs-charge",
+          "label": "二輪換電 vs. 快充生態"
+        },
+        {
+          "type": "country",
+          "id": "tw",
+          "label": "台灣"
+        }
+      ]
+    },
+    {
+      "id": "cfmoto",
+      "name": "CFMOTO（春風動力）",
+      "category": "both",
+      "categoryLabel": "二輪 + ATV／UTV",
+      "sourcesCount": 29,
+      "updated": "2026-11-24",
+      "summary": "橫跨檔車／速克達與 ATV／UTV 的快速成長品牌，憑藉 CFORCE ATV 與 UFORCE（含純電 U6 EV）在歐洲與英國農用市場取得高市佔。",
+      "info": {
+        "type": "中國上市公司（上交所：603129）",
+        "hq": "中國浙江省杭州市",
+        "products": "CFORCE ATV、UFORCE 工具型 UTV（含 U6 EV）、ZFORCE 運動 SSV、中大排量檔車",
+        "focus": "高性價比歐洲／紐澳 UTV、純電農用 UTV"
+      },
+      "techRoute": "近年積極推出純電工具型 UTV（如 UFORCE U6 EV），標榜單次充電等速續航最高達 110 km、15A 充電約 6.5 小時完成，切入農林與園區零排放市場。",
+      "records": [
+        {
+          "date": "2026-11",
+          "event": "英國與紐澳市場主力推廣 UFORCE 工具型 UTV 與 U6 EV 純電車型"
+        },
+        {
+          "date": "2026-Q3",
+          "event": "北美 CFMoto USA 擴張 SxS 與 ATV 經銷通路"
+        }
+      ],
+      "market": "在歐洲與英國 ATV／UTV 市場市佔率名列前茅，是少數同時在歐美主力通路與二輪檔車市場同步擴張的廠商。",
+      "officialUrl": "https://www.cfmoto.com/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "atv-utv-electrification",
+          "label": "ATV／UTV 純電與油電化"
+        },
+        {
+          "type": "country",
+          "id": "eu",
+          "label": "歐洲聯盟"
+        }
+      ]
+    },
+    {
+      "id": "sym",
+      "name": "SYM（三陽工業）",
+      "category": "motorcycle",
+      "categoryLabel": "二輪機車",
+      "sourcesCount": 27,
+      "updated": "2026-11-21",
+      "summary": "台灣二輪市佔領先車廠，具備從 115cc 代步車、125/150cc 運動速克達（JET SL 等）到大型重機的完整研發製造實力。",
+      "info": {
+        "type": "台灣上市公司（TWSE: 2206）",
+        "hq": "台灣新竹縣湖口鄉",
+        "products": "JET SL 系列、MMBCU、CLBCU、WOO 115、大型重機",
+        "focus": "高效能燃油引擎、零後仰懸吊與都會／運動速克達"
+      },
+      "techRoute": "以三零科技（零延遲啟動、零噪音零污染怠速熄火、零後仰懸吊）與高燃燒效率引擎技術著稱，兼顧東南亞、歐洲（義大利／德國）與台灣內銷。",
+      "records": [
+        {
+          "date": "2026-11",
+          "event": "穩居台灣二輪銷售領先群，並持續佈局歐洲與東南亞生產據點"
+        },
+        {
+          "date": "2026-07",
+          "event": "更新 125cc–150cc 運動旗艦 JET SL 規格與優惠方案"
+        }
+      ],
+      "market": "台灣機車總市場銷售冠軍常勝軍，外銷據點遍及越南、中國大陸、義大利與德國。",
+      "officialUrl": "https://tw.sym-global.com/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "two-wheel-abs-adas",
+          "label": "二輪 ABS／TCS 與主動安全"
+        },
+        {
+          "type": "country",
+          "id": "tw",
+          "label": "台灣"
+        }
+      ]
+    },
+    {
+      "id": "honda",
+      "name": "Honda（本田技研）",
+      "category": "both",
+      "categoryLabel": "二輪 + ATV／UTV",
+      "sourcesCount": 24,
+      "updated": "2026-11-15",
+      "summary": "全球二輪銷量第一大廠，橫跨東南亞國民車、全球大型重機（DCT 雙離合器／E-Clutch）及北美 FourTrax ATV／Pioneer UTV。",
+      "info": {
+        "type": "日本上市公司（TYO: 7267）",
+        "hq": "日本東京都港區",
+        "products": "PCX、ADV、Africa Twin、FourTrax ATV、Pioneer / Talon UTV",
+        "focus": "全球二輪製造、Mobile Power Pack 換電標準、自動離合技術"
+      },
+      "techRoute": "推進可換式電池（Mobile Power Pack e:）在商用二輪與東南亞市場的應用，同時維持高妥善率燃油與混合動力架構。",
+      "records": [
+        {
+          "date": "2026-Q3",
+          "event": "持續擴大東南亞電動二輪在地化測試與合作網絡"
+        }
+      ],
+      "market": "全球二輪市佔龍頭，於印度、印尼、越南、北美與日本皆具備主導影響力。",
+      "officialUrl": "https://global.honda/",
+      "relatedRefs": [
+        {
+          "type": "country",
+          "id": "sea",
+          "label": "東南亞（印尼／越南／泰國）"
+        },
+        {
+          "type": "country",
+          "id": "jp",
+          "label": "日本"
+        }
+      ]
+    },
+    {
+      "id": "yamaha",
+      "name": "Yamaha（山葉發動機）",
+      "category": "both",
+      "categoryLabel": "二輪 + ATV／UTV",
+      "sourcesCount": 20,
+      "updated": "2026-11-12",
+      "summary": "兼具二輪速克達／跑車與越野 ATV／UTV（Wolverine、Viking、YXZ）的日系大廠，在電控調校與多輪傾斜技術（LMW）具指標性。",
+      "info": {
+        "type": "日本上市公司（TYO: 7272）",
+        "hq": "日本靜岡縣磐田市",
+        "products": "勁戰 Cygnus、MT/R 系列、Wolverine / YXZ1000R SxS、Grizzly ATV",
+        "focus": "LMW 三輪轉向技術、運動型 SxS 變速箱與電控"
+      },
+      "techRoute": "積極參與日系換電聯盟標準化，並在二輪與越野四輪領域持續演進電子油門、Y-AMT 自動變速與越野底盤調校。",
+      "records": [
+        {
+          "date": "2026-Q3",
+          "event": "強化二輪自動變速與運動型速克達電控配備"
+        }
+      ],
+      "market": "在台灣、東南亞、歐洲與北美越野市場均保有穩固的運動化品牌形象。",
+      "officialUrl": "https://global.yamaha-motor.com/",
+      "relatedRefs": [
+        {
+          "type": "concept",
+          "id": "two-wheel-abs-adas",
+          "label": "二輪 ABS／TCS 與主動安全"
+        },
+        {
+          "type": "country",
+          "id": "jp",
+          "label": "日本"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "src-01",
+      "date": "2026-11-24",
+      "category": "ATV／UTV",
+      "slug": "polaris-offroad-lineup-2027",
+      "summary": "Polaris 2027 年式全系列越野載具概覽，涵蓋 RANGER、RZR、Sportsman 與 XPEDITION 產品線。",
+      "url": "https://www.polaris.com/en-us/off-road/"
+    },
+    {
+      "id": "src-02",
+      "date": "2026-11-24",
+      "category": "ATV／UTV",
+      "slug": "polaris-atv-vs-utv-buying-guide",
+      "summary": "Polaris 官方 ATV 與 Side-by-Side (UTV) 選購差異指南：乘載人數、操控姿態與農用作業評估。",
+      "url": "https://www.polaris.com/en-us/off-road/articles/buying-guides/atv-vs-sxs-utv/"
+    },
+    {
+      "id": "src-03",
+      "date": "2026-11-24",
+      "category": "ATV／UTV",
+      "slug": "cfmoto-uforce-u6-ev-specs",
+      "summary": "CFMOTO UFORCE U6 EV 純電工具型 UTV 規格：單次充電等速續航最高 110 km，15A 充電約 6.5 小時。",
+      "url": "https://www.cfmoto.co.nz/range/utv"
+    },
+    {
+      "id": "src-04",
+      "date": "2026-11-22",
+      "category": "電動機車",
+      "slug": "gogoro-smartscooter-pulse-ezzy",
+      "summary": "Gogoro 台灣 Smartscooter 全車系與 EZZY 入門資費方案（每月 $168 起）產品資訊。",
+      "url": "https://www.gogoro.com/tw/smartscooter/"
+    },
+    {
+      "id": "src-05",
+      "date": "2026-11-20",
+      "category": "ATV／UTV",
+      "slug": "canam-brp-offroad-2027",
+      "summary": "Can-Am Off-Road 2027 ATV 與 Side-by-Side 官方車款（Outlander、Defender 等）總覽。",
+      "url": "https://can-am.brp.com/off-road/us/en/"
+    },
+    {
+      "id": "src-06",
+      "date": "2026-11-20",
+      "category": "電動機車",
+      "slug": "canam-onroad-ev-3wheel",
+      "summary": "Can-Am 跨界產品線：整合 ATV、SxS、Spyder 三輪重機與純電二輪機車（EV motorcycle）。",
+      "url": "https://can-am.brp.com/us/en/"
+    },
+    {
+      "id": "src-07",
+      "date": "2026-11-18",
+      "category": "電動機車",
+      "slug": "kymco-ionex-ione-air-fly",
+      "summary": "Ionex 光陽電動車官網與 i-One Air（車重 81.5kg、座高 73.8cm）／i-One Fly 換電規格。",
+      "url": "https://www.ionex.com.tw/"
+    },
+    {
+      "id": "src-08",
+      "date": "2026-11-18",
+      "category": "燃油機車",
+      "slug": "kymco-taiwan-lineup-rts165",
+      "summary": "KYMCO 光陽台灣最新車款列表，包含 RTS R 165、K1E、大樂與 New X-Town ST 250。",
+      "url": "https://www.kymco.com.tw/"
+    },
+    {
+      "id": "src-09",
+      "date": "2026-11-15",
+      "category": "ATV／UTV",
+      "slug": "kymco-atv-catalogue",
+      "summary": "KYMCO 官方 ATV 全地形車型錄總覽，展現台灣車廠跨足四輪越野代工與自有品牌實力。",
+      "url": "https://www.kymco.com.tw/catalogue/capacity/ATV"
+    },
+    {
+      "id": "src-10",
+      "date": "2026-11-12",
+      "category": "燃油機車",
+      "slug": "sym-taiwan-product-lineup",
+      "summary": "SYM 三陽機車產品介紹，涵蓋 115cc–150cc 運動／都會速克達（JET SL）至大型重機。",
+      "url": "https://tw.sym-global.com/product"
+    },
+    {
+      "id": "src-11",
+      "date": "2026-11-08",
+      "category": "法規與認證",
+      "slug": "sanyang-global-footprint-eu",
+      "summary": "三陽工業企業網站揭示全球製造與銷售佈局，涵蓋越南、中國大陸、義大利與德國市場。",
+      "url": "https://www.sanyang.com.tw/"
+    },
+    {
+      "id": "src-12",
+      "date": "2026-11-06",
+      "category": "ATV／UTV",
+      "slug": "cfmoto-uk-uforce-utility",
+      "summary": "CFMOTO 英國 UTV 與 SSV 工具車系列介紹，解析傾卸貨斗與農用 Side-by-Side 市場定位。",
+      "url": "https://www.cfmoto.co.uk/side-by-side/"
+    }
+  ]
+};
+
+    // =========================================================================
+    // 狀態管理與初始化
+    // =========================================================================
+    let currentEntityFilter = 'all';
+    let currentSourceFilter = '全部';
+
+    function updateTopStatsAndNav() {
+      const sCount = WIKI_DATA.sources.length;
+      const cCount = WIKI_DATA.concepts.length;
+      const coCount = WIKI_DATA.countries.length;
+      const eCount = WIKI_DATA.entities.length;
+
+      document.getElementById('top-stats-bar').innerHTML =
+        `<span class="text-slate-200 font-semibold">${sCount}</span> 來源 · ` +
+        `<span class="text-teal-400 font-semibold">${cCount}</span> 概念 · ` +
+        `<span class="text-sky-400 font-semibold">${coCount}</span> 國家 · ` +
+        `<span class="text-amber-400 font-semibold">${eCount}</span> 車廠 · ` +
+        `<span class="hidden sm:inline text-slate-500">最後更新 2026-11-24</span>`;
+
+      document.getElementById('nav-count-activity').textContent = WIKI_DATA.activities.length;
+      document.getElementById('nav-count-concepts').textContent = cCount;
+      document.getElementById('nav-count-countries').textContent = coCount;
+      document.getElementById('nav-count-entities').textContent = eCount;
+      document.getElementById('nav-count-sources').textContent = sCount;
+    }
+
+    // =========================================================================
+    // 1. 渲染最新動態 (#activity)
+    // =========================================================================
+    function renderActivities() {
+      const container = document.getElementById('activity-list');
+      container.innerHTML = WIKI_DATA.activities.map(item => `
+        <article class="relative rounded-xl border border-slate-800/90 bg-[#111827] p-5 transition hover:border-slate-700">
+          <span class="absolute -left-[27px] top-6 h-3 w-3 rounded-full border-2 border-[#0b0f17] bg-amber-400"></span>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="font-mono text-xs font-semibold text-slate-400">${item.date}</span>
+              <span class="rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-semibold text-amber-300">${item.type}</span>
+            </div>
+            <button type="button" data-open-type="activity" data-open-id="${item.id}" class="text-xs font-semibold text-amber-400 hover:text-amber-300">
+              看完整敘事 →
+            </button>
+          </div>
+          <h3 class="mt-2.5 text-base font-bold text-white sm:text-lg">${item.title}</h3>
+          <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div class="rounded-lg border border-blue-500/25 bg-blue-500/10 p-3">
+              <div class="mb-1 text-xs font-bold text-blue-300">坡道・為何值得看</div>
+              <p class="text-xs leading-relaxed text-slate-300">${item.why}</p>
+            </div>
+            <div class="rounded-lg border border-emerald-500/25 bg-emerald-500/10 p-3">
+              <div class="mb-1 text-xs font-bold text-emerald-300">發現・核心重點</div>
+              <p class="text-xs leading-relaxed text-slate-300">${item.finding}</p>
+            </div>
+            <div class="rounded-lg border border-amber-500/25 bg-amber-500/10 p-3">
+              <div class="mb-1 text-xs font-bold text-amber-300">甜點・下一步追蹤</div>
+              <p class="text-xs leading-relaxed text-slate-300">${item.next}</p>
+            </div>
+          </div>
+          <div class="mt-3 text-xs text-slate-500">${item.stats}</div>
+        </article>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 2. 渲染概念地圖 (#concepts)
+    // =========================================================================
+    function renderConcepts() {
+      const container = document.getElementById('concepts-grid');
+      container.innerHTML = WIKI_DATA.concepts.map(c => `
+        <button type="button" data-open-type="concept" data-open-id="${c.id}" class="group flex flex-col justify-between rounded-xl border border-slate-800 bg-[#111827] p-5 text-left transition hover:-translate-y-0.5 hover:border-teal-500/50 hover:bg-[#141d2e]">
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="text-base font-bold text-white group-hover:text-teal-300">${c.title}</h3>
+              <span class="shrink-0 rounded-full bg-teal-500/15 px-2.5 py-0.5 text-xs font-semibold text-teal-300">${c.sourcesCount} 來源</span>
+            </div>
+            <p class="mt-2.5 line-clamp-3 text-xs leading-relaxed text-slate-400">${c.summary}</p>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              ${c.tags.map(t => `<span class="rounded-md bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-800/80">
+            <div class="mb-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+              <div class="h-full rounded-full bg-teal-500" style="width: ${c.progress}%"></div>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <span class="font-mono">${c.updated}</span>
+              <span class="font-medium text-teal-400 group-hover:underline">點擊看完整內容 →</span>
+            </div>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 3. 渲染國家動態 (#countries)
+    // =========================================================================
+    function renderCountries() {
+      const container = document.getElementById('countries-grid');
+      container.innerHTML = WIKI_DATA.countries.map(co => `
+        <button type="button" data-open-type="country" data-open-id="${co.id}" class="group flex flex-col justify-between rounded-xl border border-slate-800 bg-[#111827] p-5 text-left transition hover:-translate-y-0.5 hover:border-sky-500/50 hover:bg-[#141d2e]">
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="flex items-center gap-2 text-base font-bold text-white group-hover:text-sky-300">
+                <span>🌐</span>
+                <span>${co.name}</span>
+              </h3>
+              <span class="shrink-0 rounded-full bg-sky-500/15 px-2.5 py-0.5 text-xs font-semibold text-sky-300">${co.sourcesCount} 來源</span>
+            </div>
+            <p class="mt-2.5 line-clamp-3 text-xs leading-relaxed text-slate-400">${co.summary}</p>
+            <div class="mt-3 flex flex-wrap gap-1.5">
+              ${co.tags.map(t => `<span class="rounded-md bg-slate-800 px-2 py-0.5 text-[11px] text-slate-300">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between border-t border-slate-800/80 pt-3 text-xs text-slate-500">
+            <span class="font-mono">${co.updated}</span>
+            <span class="font-medium text-sky-400 group-hover:underline">看完整內容 →</span>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 4. 渲染車廠資料庫 (#entities)
+    // =========================================================================
+    function renderEntityFilters() {
+      const filters = [
+        { key: 'all', label: '全部車廠' },
+        { key: 'motorcycle', label: '二輪機車' },
+        { key: 'atv', label: 'ATV／UTV' },
+        { key: 'both', label: '跨界／雙線布局' }
+      ];
+      const container = document.getElementById('entity-filters');
+      container.innerHTML = filters.map(f => {
+        const active = currentEntityFilter === f.key;
+        return `<button type="button" data-entity-filter="${f.key}" class="rounded-lg px-3 py-1.5 text-xs font-semibold transition ${
+          active
+            ? 'bg-amber-500 text-slate-950'
+            : 'border border-slate-700 bg-slate-800/60 text-slate-300 hover:bg-slate-800 hover:text-white'
+        }">${f.label}</button>`;
+      }).join('');
+    }
+
+    function renderEntities() {
+      const container = document.getElementById('entities-grid');
+      const filtered = [...WIKI_DATA.entities]
+        .filter(e => currentEntityFilter === 'all' || e.category === currentEntityFilter)
+        .sort((a, b) => b.sourcesCount - a.sourcesCount);
+
+      container.innerHTML = filtered.map(e => `
+        <button type="button" data-open-type="entity" data-open-id="${e.id}" class="group flex flex-col justify-between rounded-xl border border-slate-800 bg-[#111827] p-5 text-left transition hover:-translate-y-0.5 hover:border-amber-500/60 hover:bg-[#141d2e]">
+          <div>
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="text-base font-bold text-white group-hover:text-amber-300">${e.name}</h3>
+              <span class="shrink-0 rounded-full bg-amber-500/15 px-2.5 py-0.5 font-mono text-xs font-bold text-amber-400">${e.sourcesCount}</span>
+            </div>
+            <span class="mt-1.5 inline-block rounded bg-slate-800 px-2 py-0.5 text-[11px] font-medium text-slate-300">${e.categoryLabel}</span>
+            <p class="mt-2.5 line-clamp-3 text-xs leading-relaxed text-slate-400">${e.summary}</p>
+          </div>
+          <div class="mt-4 flex items-center justify-between border-t border-slate-800/80 pt-3 text-xs text-slate-500">
+            <span class="font-mono">${e.updated}</span>
+            <span class="font-medium text-amber-400 group-hover:underline">看完整資料 →</span>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 5. 渲染來源追蹤 (#sources)
+    // =========================================================================
+    function renderSourceFilters() {
+      const counts = {};
+      WIKI_DATA.sources.forEach(s => {
+        counts[s.category] = (counts[s.category] || 0) + 1;
+      });
+      const categories = ['全部', ...Object.keys(counts)];
+      const container = document.getElementById('source-filters');
+      container.innerHTML = categories.map(cat => {
+        const count = cat === '全部' ? WIKI_DATA.sources.length : counts[cat];
+        const active = currentSourceFilter === cat;
+        return `<button type="button" data-source-filter="${cat}" class="rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+          active
+            ? 'bg-emerald-500 text-slate-950'
+            : 'border border-slate-700 bg-slate-800/70 text-slate-300 hover:bg-slate-800 hover:text-white'
+        }">${cat} (${count})</button>`;
+      }).join('');
+    }
+
+    function renderSources() {
+      const tbody = document.getElementById('sources-tbody');
+      const rows = WIKI_DATA.sources.filter(
+        s => currentSourceFilter === '全部' || s.category === currentSourceFilter
+      );
+      tbody.innerHTML = rows.map(s => `
+        <tr id="${s.id}" class="transition hover:bg-slate-800/40">
+          <td class="whitespace-nowrap px-4 py-3.5 font-mono text-xs text-slate-400">${s.date}</td>
+          <td class="whitespace-nowrap px-4 py-3.5">
+            <span class="rounded-md bg-slate-800 px-2 py-0.5 text-xs font-medium text-emerald-300">${s.category}</span>
+          </td>
+          <td class="px-4 py-3.5">
+            <div class="font-mono text-[11px] text-slate-500">${s.slug}</div>
+            <div class="mt-0.5 text-xs text-slate-200 sm:text-sm">${s.summary}</div>
+          </td>
+          <td class="whitespace-nowrap px-4 py-3.5 text-right">
+            <a href="${s.url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/70 px-2.5 py-1 text-xs font-medium text-sky-300 hover:border-sky-500/50 hover:bg-slate-800 hover:text-sky-200">
+              ↗ 原文
+            </a>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // =========================================================================
+    // 右側抽屜面板 (Slide-over Drawer)
+    // =========================================================================
+    const drawer = document.getElementById('detail-drawer');
+    const drawerBackdrop = document.getElementById('drawer-backdrop');
+    const drawerBadge = document.getElementById('drawer-badge');
+    const drawerTitle = document.getElementById('drawer-title');
+    const drawerMeta = document.getElementById('drawer-meta');
+    const drawerBody = document.getElementById('drawer-body');
+
+    function renderRelatedChips(refs) {
+      if (!refs || !refs.length) return '';
+      return `
+        <div class="border-t border-slate-800 pt-4">
+          <h4 class="mb-2.5 text-xs font-bold uppercase tracking-wider text-slate-400">交叉關聯條目</h4>
+          <div class="flex flex-wrap gap-2">
+            ${refs.map(r => `
+              <button type="button" data-open-type="${r.type}" data-open-id="${r.id}" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-medium text-amber-300 transition hover:border-amber-500/60 hover:bg-slate-800">
+                <span>🔗</span>
+                <span>${r.label}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function openDrawer(type, id) {
+      let badgeText = '';
+      let badgeClass = '';
+      let title = '';
+      let meta = '';
+      let html = '';
+
+      if (type === 'entity') {
+        const item = WIKI_DATA.entities.find(x => x.id === id);
+        if (!item) return;
+        badgeText = `🏭 車廠資料庫 · ${item.categoryLabel}`;
+        badgeClass = 'bg-amber-500/15 text-amber-300 border border-amber-500/30';
+        title = item.name;
+        meta = `${item.sourcesCount} 個關聯來源 · 更新 ${item.updated}`;
+        html = `
+          <p class="rounded-lg border border-slate-800 bg-slate-900/60 p-4 text-slate-200">${item.summary}</p>
+          <div>
+            <h4 class="mb-2.5 text-sm font-bold text-white">基本資訊</h4>
+            <div class="overflow-hidden rounded-lg border border-slate-800">
+              <table class="w-full text-left text-xs">
+                <tbody class="divide-y divide-slate-800">
+                  <tr><th class="w-28 bg-slate-900/80 px-3 py-2.5 font-semibold text-slate-400">企業類型</th><td class="px-3 py-2.5 text-slate-200">${item.info.type}</td></tr>
+                  <tr><th class="bg-slate-900/80 px-3 py-2.5 font-semibold text-slate-400">總部位置</th><td class="px-3 py-2.5 text-slate-200">${item.info.hq}</td></tr>
+                  <tr><th class="bg-slate-900/80 px-3 py-2.5 font-semibold text-slate-400">主力產品</th><td class="px-3 py-2.5 text-slate-200">${item.info.products}</td></tr>
+                  <tr><th class="bg-slate-900/80 px-3 py-2.5 font-semibold text-slate-400">戰略重心</th><td class="px-3 py-2.5 text-slate-200">${item.info.focus}</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4 class="mb-1.5 text-sm font-bold text-white">技術路線</h4>
+            <p class="text-slate-300">${item.techRoute}</p>
+          </div>
+          <div>
+            <h4 class="mb-2 text-sm font-bold text-white">關鍵動態與認證紀錄</h4>
+            <div class="overflow-hidden rounded-lg border border-slate-800">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-900/80 text-slate-400">
+                  <tr><th class="w-24 px-3 py-2">時間</th><th class="px-3 py-2">事件摘要</th></tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800">
+                  ${item.records.map(r => `<tr><td class="px-3 py-2 font-mono text-amber-300">${r.date}</td><td class="px-3 py-2 text-slate-200">${r.event}</td></tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h4 class="mb-1.5 text-sm font-bold text-white">市場表現</h4>
+            <p class="text-slate-300">${item.market}</p>
+          </div>
+          <div>
+            <a href="${item.officialUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 rounded-lg bg-amber-500 px-3.5 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400">
+              ↗ 前往官方網站
+            </a>
+          </div>
+          ${renderRelatedChips(item.relatedRefs)}
+        `;
+      } else if (type === 'concept') {
+        const item = WIKI_DATA.concepts.find(x => x.id === id);
+        if (!item) return;
+        badgeText = '🗺️ 概念地圖';
+        badgeClass = 'bg-teal-500/15 text-teal-300 border border-teal-500/30';
+        title = item.title;
+        meta = `${item.sourcesCount} 個關聯來源 · 完整度 ${item.progress}% · 更新 ${item.updated}`;
+        html = `
+          <p class="rounded-lg border border-slate-800 bg-slate-900/60 p-4 text-slate-200">${item.summary}</p>
+          <div class="flex flex-wrap gap-1.5">
+            ${item.tags.map(t => `<span class="rounded-md bg-slate-800 px-2.5 py-1 text-xs text-teal-300">${t}</span>`).join('')}
+          </div>
+          ${item.sections.map(sec => `
+            <div>
+              <h4 class="mb-1.5 text-sm font-bold text-white">${sec.heading}</h4>
+              <p class="text-slate-300">${sec.text}</p>
+            </div>
+          `).join('')}
+          ${renderRelatedChips(item.relatedRefs)}
+        `;
+      } else if (type === 'country') {
+        const item = WIKI_DATA.countries.find(x => x.id === id);
+        if (!item) return;
+        badgeText = '🌍 國家動態';
+        badgeClass = 'bg-sky-500/15 text-sky-300 border border-sky-500/30';
+        title = item.name;
+        meta = `${item.sourcesCount} 個關聯來源 · 更新 ${item.updated}`;
+        html = `
+          <p class="rounded-lg border border-slate-800 bg-slate-900/60 p-4 text-slate-200">${item.summary}</p>
+          <div class="flex flex-wrap gap-1.5">
+            ${item.tags.map(t => `<span class="rounded-md bg-slate-800 px-2.5 py-1 text-xs text-sky-300">${t}</span>`).join('')}
+          </div>
+          ${item.sections.map(sec => `
+            <div>
+              <h4 class="mb-1.5 text-sm font-bold text-white">${sec.heading}</h4>
+              <p class="text-slate-300">${sec.text}</p>
+            </div>
+          `).join('')}
+          ${renderRelatedChips(item.relatedRefs)}
+        `;
+      } else if (type === 'activity') {
+        const item = WIKI_DATA.activities.find(x => x.id === id);
+        if (!item) return;
+        badgeText = `📰 最新動態 · ${item.type}`;
+        badgeClass = 'bg-amber-500/15 text-amber-300 border border-amber-500/30';
+        title = item.title;
+        meta = `${item.date} · ${item.stats}`;
+        html = `
+          <div class="rounded-lg border border-blue-500/25 bg-blue-500/10 p-4">
+            <div class="mb-1 text-xs font-bold text-blue-300">坡道・為何值得看</div>
+            <p class="text-slate-200">${item.why}</p>
+          </div>
+          <div class="rounded-lg border border-emerald-500/25 bg-emerald-500/10 p-4">
+            <div class="mb-1 text-xs font-bold text-emerald-300">發現・核心重點</div>
+            <p class="text-slate-200">${item.finding}</p>
+          </div>
+          <div class="rounded-lg border border-amber-500/25 bg-amber-500/10 p-4">
+            <div class="mb-1 text-xs font-bold text-amber-300">甜點・下一步追蹤</div>
+            <p class="text-slate-200">${item.next}</p>
+          </div>
+          ${renderRelatedChips(item.relatedRefs)}
+        `;
+      }
+
+      drawerBadge.textContent = badgeText;
+      drawerBadge.className = `mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${badgeClass}`;
+      drawerTitle.textContent = title;
+      drawerMeta.textContent = meta;
+      drawerBody.innerHTML = html;
+
+      drawerBackdrop.classList.remove('hidden');
+      drawer.classList.remove('translate-x-full');
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeDrawer() {
+      drawer.classList.add('translate-x-full');
+      drawerBackdrop.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+
+    // =========================================================================
+    // 全域即時搜尋
+    // =========================================================================
+    const searchInput = document.getElementById('global-search');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    const searchDropdown = document.getElementById('search-dropdown');
+
+    function handleSearch() {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        clearSearchBtn.classList.add('hidden');
+        searchDropdown.classList.add('hidden');
+        searchDropdown.innerHTML = '';
+        return;
+      }
+      clearSearchBtn.classList.remove('hidden');
+
+      const results = [];
+      WIKI_DATA.entities.forEach(e => {
+        if ((e.name + e.summary + e.info.products).toLowerCase().includes(q)) {
+          results.push({ type: 'entity', id: e.id, badge: '車廠', badgeColor: 'text-amber-300 bg-amber-500/15', title: e.name, desc: e.summary });
+        }
+      });
+      WIKI_DATA.concepts.forEach(c => {
+        if ((c.title + c.summary + c.tags.join(' ')).toLowerCase().includes(q)) {
+          results.push({ type: 'concept', id: c.id, badge: '概念', badgeColor: 'text-teal-300 bg-teal-500/15', title: c.title, desc: c.summary });
+        }
+      });
+      WIKI_DATA.countries.forEach(co => {
+        if ((co.name + co.summary).toLowerCase().includes(q)) {
+          results.push({ type: 'country', id: co.id, badge: '國家', badgeColor: 'text-sky-300 bg-sky-500/15', title: co.name, desc: co.summary });
+        }
+      });
+      WIKI_DATA.sources.forEach(s => {
+        if ((s.slug + s.summary + s.category).toLowerCase().includes(q)) {
+          results.push({ type: 'source', id: s.id, badge: '來源', badgeColor: 'text-emerald-300 bg-emerald-500/15', title: s.slug, desc: s.summary });
+        }
+      });
+
+      if (results.length === 0) {
+        searchDropdown.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">找不到符合「${searchInput.value.trim()}」的條目</div>`;
+      } else {
+        searchDropdown.innerHTML = results.slice(0, 10).map(r => `
+          <button type="button" data-search-type="${r.type}" data-search-id="${r.id}" class="flex w-full flex-col gap-1 rounded-lg px-3 py-2 text-left transition hover:bg-slate-800/90">
+            <div class="flex items-center gap-2">
+              <span class="rounded px-1.5 py-0.5 text-[10px] font-semibold ${r.badgeColor}">${r.badge}</span>
+              <span class="text-xs font-bold text-white">${r.title}</span>
+            </div>
+            <span class="line-clamp-1 text-[11px] text-slate-400">${r.desc}</span>
+          </button>
+        `).join('');
+      }
+      searchDropdown.classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // Scroll-Spy 與行動裝置選單控制
+    // =========================================================================
+    const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+
+    function openSidebar() {
+      sidebar.classList.remove('-translate-x-full');
+      sidebarBackdrop.classList.remove('hidden');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.add('-translate-x-full');
+      sidebarBackdrop.classList.add('hidden');
+    }
+
+    function setupScrollSpy() {
+      const sections = ['activity', 'concepts', 'countries', 'entities', 'sources'];
+      const navLinks = document.querySelectorAll('.nav-item');
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            navLinks.forEach(link => {
+              link.classList.toggle('active', link.dataset.section === id);
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
+
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    }
+
+    // =========================================================================
+    // 事件委派與啟動
+    // =========================================================================
+    document.addEventListener('click', (e) => {
+      const openBtn = e.target.closest('[data-open-type]');
+      if (openBtn) {
+        openDrawer(openBtn.dataset.openType, openBtn.dataset.openId);
+        return;
+      }
+
+      const entityFilterBtn = e.target.closest('[data-entity-filter]');
+      if (entityFilterBtn) {
+        currentEntityFilter = entityFilterBtn.dataset.entityFilter;
+        renderEntityFilters();
+        renderEntities();
+        return;
+      }
+
+      const sourceFilterBtn = e.target.closest('[data-source-filter]');
+      if (sourceFilterBtn) {
+        currentSourceFilter = sourceFilterBtn.dataset.sourceFilter;
+        renderSourceFilters();
+        renderSources();
+        return;
+      }
+
+      const searchItem = e.target.closest('[data-search-type]');
+      if (searchItem) {
+        const { searchType, searchId } = searchItem.dataset;
+        searchDropdown.classList.add('hidden');
+        if (searchType === 'source') {
+          currentSourceFilter = '全部';
+          renderSourceFilters();
+          renderSources();
+          const row = document.getElementById(searchId);
+          if (row) {
+            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            row.classList.add('bg-amber-500/20');
+            setTimeout(() => row.classList.remove('bg-amber-500/20'), 1800);
+          }
+        } else {
+          openDrawer(searchType, searchId);
+        }
+        return;
+      }
+
+      if (!e.target.closest('#global-search') && !e.target.closest('#search-dropdown')) {
+        searchDropdown.classList.add('hidden');
+      }
+    });
+
+    document.getElementById('close-drawer-btn').addEventListener('click', closeDrawer);
+    drawerBackdrop.addEventListener('click', closeDrawer);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeDrawer();
+        searchDropdown.classList.add('hidden');
+      }
+    });
+
+    searchInput.addEventListener('input', handleSearch);
+    searchInput.addEventListener('focus', handleSearch);
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      handleSearch();
+      searchInput.focus();
+    });
+
+    document.getElementById('open-sidebar-btn').addEventListener('click', openSidebar);
+    document.getElementById('close-sidebar-btn').addEventListener('click', closeSidebar);
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+    document.querySelectorAll('.nav-item').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) closeSidebar();
+      });
+    });
+
+    // Init
+    updateTopStatsAndNav();
+    renderActivities();
+    renderConcepts();
+    renderCountries();
+    renderEntityFilters();
+    renderEntities();
+    renderSourceFilters();
+    renderSources();
+    setupScrollSpy();
+  </script>
+</body>
+</html>
